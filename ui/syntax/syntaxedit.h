@@ -21,9 +21,9 @@
 #define SE_SET_PARENT_DPI (WM_USER + 0x3102)
 
 enum block_state {
-	InevaluableBlockingUntunneledTraffic,
-	BlockingUntunneledTraffic,
-	NotBlockingUntunneledTraffic
+	InevaluableBlockingUntunneledTraffic = 0,
+	BlockingUntunneledTraffic = 1,
+	NotBlockingUntunneledTraffic = 2
 };
 
 extern bool register_syntax_edit(void);

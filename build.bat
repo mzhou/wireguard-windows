@@ -81,8 +81,10 @@ if exist .deps\prepared goto :render
 	echo [+] Assembling resources %1
 	windres -I ".deps\wintun\bin\%~1" -i resources.rc -o "resources_%~3.syso" -O coff || exit /b %errorlevel%
 	echo [+] Building program %1
-	go build -ldflags="-H windowsgui -s -w" -tags walk_use_cgo -trimpath -v -o "%~1\wireguard.exe" || exit /b 1
-	if not exist "%~1\wg.exe" (
+	set GO_BUILD_FLAGS=-ldflags="-H windowsgui -s -w" -trimpath -v
+	if "%CGO_ENABLED%"=="1" set GO_BUILD_FLAGS=%GO_BUILD_FLAGS% -tags walk_use_cgo
+	go build %GO_BUILD_FLAGS% -o "%~1\wireguard.exe" || exit /b 1
+	if "%CGO_ENABLED%"=="1" if not exist "%~1\wg.exe" (
 		echo [+] Building command line tools %1
 		del .deps\src\*.exe .deps\src\*.o .deps\src\wincompat\*.o 2> NUL
 		make --no-print-directory -C .deps\src PLATFORM=windows CC=%CC% V=1 LDFLAGS=-s RUNSTATEDIR= SYSTEMDUNITDIR= -j%NUMBER_OF_PROCESSORS% || exit /b 1
