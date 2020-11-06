@@ -100,12 +100,14 @@ func (iw *interfaceWatcher) setup(family winipcfg.AddressFamily) {
 	}
 	var err error
 
+	/*
 	log.Printf("Monitoring default %s routes", ipversion)
 	*changeCallbacks, err = monitorDefaultRoutes(family, iw.device, iw.conf.Interface.MTU == 0, hasDefaultRoute(family, iw.conf.Peers), iw.tun)
 	if err != nil {
 		iw.errors <- interfaceWatcherError{services.ErrorBindSocketsToDefaultRoutes, err}
 		return
 	}
+	*/
 
 	log.Printf("Setting device %s addresses", ipversion)
 	err = configureInterface(family, iw.conf, iw.tun)
